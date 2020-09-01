@@ -1,6 +1,4 @@
-mod intcode;
-
-use intcode::{IntCodeRunner, IntCodeMachine, IntCodeIO};
+use common::intcode::{IntCodeRunner, IntCodeMachine, IntCodeIO};
 
 use std::sync::mpsc;
 
