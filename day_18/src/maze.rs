@@ -1,5 +1,5 @@
-use crate::vec2::{Vec2i, Vec2u};
-use crate::array2d::Array2D;
+use common::vec2::{Vec2i, Vec2u};
+use common::array2d::Array2D;
 
 use std::convert::TryFrom;
 use std::collections::{HashMap, HashSet, BTreeSet, VecDeque};

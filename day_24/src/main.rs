@@ -1,9 +1,7 @@
-mod array2d;
-mod vec2;
 mod devec;
 
-use vec2::Vec2i;
-use array2d::Array2D;
+use common::vec2::Vec2i;
+use common::array2d::Array2D;
 use devec::Devec;
 
 use std::collections::HashSet;

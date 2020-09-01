@@ -1,8 +1,5 @@
-mod vec2;
-mod array2d;
-
-use vec2::{Vec2i, Vec2u};
-use array2d::Array2D;
+use common::vec2::{Vec2i, Vec2u};
+use common::array2d::Array2D;
 
 use std::collections::{
     HashMap, VecDeque, HashSet

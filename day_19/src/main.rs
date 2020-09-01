@@ -1,11 +1,10 @@
 mod intcode;
-mod vec2;
 
 use intcode::{IntCodeRunner, IntCodeMachine};
 
 use std::sync::mpsc::channel;
 use std::collections::HashSet;
-use vec2::Vec2;
+use common::vec2::Vec2;
 
 type Vec2l = Vec2<i64>;
 

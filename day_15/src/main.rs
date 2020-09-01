@@ -1,8 +1,7 @@
 mod intcode;
-mod vec2;
 
 use intcode::IntCodeRunner;
-use vec2::Vec2;
+use common::vec2::Vec2i;
 
 use std::sync::mpsc::channel;
 use std::thread;
@@ -17,30 +16,30 @@ enum Block {
     Oxygen,
 }
 
-fn get_direction(id: i32) -> Option<Vec2> {
+fn get_direction(id: i32) -> Option<Vec2i> {
     match id {
-        1 => Some(Vec2::new(0, 1)),
-        2 => Some(Vec2::new(0, -1)),
-        3 => Some(Vec2::new(-1, 0)),
-        4 => Some(Vec2::new(1, 0)),
+        1 => Some(Vec2i::new(0, 1)),
+        2 => Some(Vec2i::new(0, -1)),
+        3 => Some(Vec2i::new(-1, 0)),
+        4 => Some(Vec2i::new(1, 0)),
         _ => None,
     }
 }
 
-fn get_direction_id(v: &Vec2) -> Option<i32> {
+fn get_direction_id(v: &Vec2i) -> Option<i32> {
     match v {
-        Vec2 { x: 0, y: 1 } => Some(1),
-        Vec2 { x: 0, y: -1 } => Some(2),
-        Vec2 { x: -1, y: 0 } => Some(3),
-        Vec2 { x: 1, y: 0 } => Some(4),
+        Vec2i { x: 0, y: 1 } => Some(1),
+        Vec2i { x: 0, y: -1 } => Some(2),
+        Vec2i { x: -1, y: 0 } => Some(3),
+        Vec2i { x: 1, y: 0 } => Some(4),
         _ => None,
     }
 }
 
 struct Robot {
-    visit_stack: Vec<Vec2>, // Currently visited all these tiles from the start
-    map: HashMap<Vec2, (Block, i32)>, // Map of area, each location mapping to (contents, distance from start)
-    curpos: Vec2,
+    visit_stack: Vec<Vec2i>, // Currently visited all these tiles from the start
+    map: HashMap<Vec2i, (Block, i32)>, // Map of area, each location mapping to (contents, distance from start)
+    curpos: Vec2i,
     backtracking: bool
 }
 
@@ -49,14 +48,14 @@ impl Robot {
         let mut s = Self {
             visit_stack: Vec::new(),
             map: HashMap::new(),
-            curpos: Vec2::new(0, 0),
+            curpos: Vec2i::new(0, 0),
             backtracking: false
         };
         s.map.insert(s.curpos.clone(), (Block::Air, 0));
         return s;
     }
 
-    fn get(&self, p: &Vec2) -> Block {
+    fn get(&self, p: &Vec2i) -> Block {
         if let Some((b, _)) = self.map.get(p) {
             *b
         } else {
@@ -64,7 +63,7 @@ impl Robot {
         }
     }
 
-    fn should_visit(&self, p: &Vec2) -> bool {
+    fn should_visit(&self, p: &Vec2i) -> bool {
         // Visit this place either if its not visited
         // or if the last time we visited, it took longer
         match self.get(p) {
@@ -212,7 +211,7 @@ impl Robot {
                 let c = if x == 0 && y == 0 {
                     "@"
                 } else {
-                    match self.get(&Vec2::new(x, y)) {
+                    match self.get(&Vec2i::new(x, y)) {
                         Block::Unknown => " ",
                         Block::Air => ".",
                         Block::Oxygen => "O",

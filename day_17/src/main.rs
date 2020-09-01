@@ -1,8 +1,7 @@
 mod intcode;
-mod vec2;
 
 use intcode::IntCodeRunner;
-use vec2::Vec2;
+use common::vec2::Vec2i;
 
 use itertools::Itertools;
 
@@ -14,7 +13,7 @@ enum Block {
     Air,
     Scaffold,
     Visited,
-    Robot(Vec2)
+    Robot(Vec2i)
 }
 
 fn printmap(map: &Vec<Vec<Block>>) {
@@ -53,10 +52,10 @@ fn find_path(mut machine: IntCodeRunner) -> Vec<String> {
                 y += 1;
                 continue;
             }
-            60 => Block::Robot(Vec2::new(-1, 0)),
-            62 => Block::Robot(Vec2::new(1, 0)),
-            94 => Block::Robot(Vec2::new(0, -1)),
-            86 => Block::Robot(Vec2::new(0, 1)),
+            60 => Block::Robot(Vec2i::new(-1, 0)),
+            62 => Block::Robot(Vec2i::new(1, 0)),
+            94 => Block::Robot(Vec2i::new(0, -1)),
+            86 => Block::Robot(Vec2i::new(0, 1)),
             _ => panic!("Unknown character {}", i)
         };
 
@@ -66,10 +65,10 @@ fn find_path(mut machine: IntCodeRunner) -> Vec<String> {
     printmap(&map);
 
     let directions = vec![
-        Vec2::new(0, 1),
-        Vec2::new(1, 0),
-        Vec2::new(0, -1),
-        Vec2::new(-1, 0)
+        Vec2i::new(0, 1),
+        Vec2i::new(1, 0),
+        Vec2i::new(0, -1),
+        Vec2i::new(-1, 0)
     ];
 
     let len_x = map[0].len();
@@ -84,7 +83,7 @@ fn find_path(mut machine: IntCodeRunner) -> Vec<String> {
     for y in 0..len_y {
         for x in 0..len_x {
             if map[y][x] == Block::Scaffold {
-                let p = Vec2::new(x as i32, y as i32);
+                let p = Vec2i::new(x as i32, y as i32);
                 let mut neighbors = 0;
                 for dir in &directions {
                     let n = p.add(dir);
@@ -109,7 +108,7 @@ fn find_path(mut machine: IntCodeRunner) -> Vec<String> {
     let (mut robot_pos, mut robot_dir) = map.iter().enumerate().flat_map(|(y, v)| {
         v.iter().enumerate().filter_map(move |(x, b)| {
             match b {
-                Block::Robot(dir) => Some((Vec2::new(x as i32, y as i32), dir.clone())),
+                Block::Robot(dir) => Some((Vec2i::new(x as i32, y as i32), dir.clone())),
                 _ => None
             }
         })

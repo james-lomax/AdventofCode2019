@@ -1,11 +1,9 @@
-mod vec2;
-mod array2d;
 mod maze;
 
 use std::collections::{BTreeSet, HashMap};
 
-use array2d::Array2D;
-use vec2::Vec2i;
+use common::array2d::Array2D;
+use common::vec2::Vec2i;
 use maze::{Maze, Block};
 
 #[derive(Clone, Debug, Hash, PartialEq, Eq)]

@@ -3,12 +3,11 @@ use std::collections::{HashMap, VecDeque};
 mod direction;
 use direction::Direction;
 
-mod vec2;
-use vec2::Vec2;
+use common::vec2::Vec2i;
 
-fn count_visible(asteroids: Vec<Vec2>, from: Vec2) -> HashMap<Vec2, VecDeque<Vec2>> {
+fn count_visible(asteroids: Vec<Vec2i>, from: Vec2i) -> HashMap<Vec2i, VecDeque<Vec2i>> {
     // Project from new perspective
-    let mut asteroids : Vec<Vec2> = asteroids.iter().map(|v| v.sub(&from)).collect();
+    let mut asteroids : Vec<Vec2i> = asteroids.iter().map(|v| v.sub(&from)).collect();
 
     // Sort by manhatten lengths
     asteroids.sort_by(|a, b| a.manhatten().cmp(&b.manhatten()));
@@ -25,24 +24,24 @@ fn count_visible(asteroids: Vec<Vec2>, from: Vec2) -> HashMap<Vec2, VecDeque<Vec
     return map;
 }
 
-fn get_200th(mut map: HashMap<Vec2, VecDeque<Vec2>>) -> Option<Vec2> {
+fn get_200th(mut map: HashMap<Vec2i, VecDeque<Vec2i>>) -> Option<Vec2i> {
     // Create a list of keys (possible directions) sorted by the angle around 
     // Since it's sorted by clockwise angles from up, the first is always the first asteroid to zap
-    let up = Vec2::new(0, -1);
-    let mut keylist : Vec<Vec2> = map.keys().cloned().collect();
+    let up = Vec2i::new(0, -1);
+    let mut keylist : Vec<Vec2i> = map.keys().cloned().collect();
     
     // Option 1: sort by angle
     //keylist.sort_by(|a, b| a.angle(&up).partial_cmp(&b.angle(&up)).unwrap());
     
     // Option 2: Sort by direction (no floats!)
     let mut keylist = keylist.drain(..)
-                        .map(|v| Direction::from(Vec2::new(v.x, -v.y)))
+                        .map(|v| Direction::from(Vec2i::new(v.x, -v.y)))
                         .collect::<Vec<Direction>>();
     keylist.sort();
     let keylist = keylist.drain(..)
                     .map(|d| d.to_vec())
-                    .map(|v| Vec2::new(v.x, -v.y))
-                    .collect::<Vec<Vec2>>();
+                    .map(|v| Vec2i::new(v.x, -v.y))
+                    .collect::<Vec<Vec2i>>();
 
     let mut count = 0;
     loop {
@@ -63,14 +62,14 @@ fn get_200th(mut map: HashMap<Vec2, VecDeque<Vec2>>) -> Option<Vec2> {
 fn main() {
     let contents = std::fs::read_to_string("input.txt").expect("file erro");
 
-    let asteroids : Vec<Vec2> = contents.split("\n").enumerate().flat_map(|(y, row)| {
+    let asteroids : Vec<Vec2i> = contents.split("\n").enumerate().flat_map(|(y, row)| {
         row.chars().enumerate()
             .filter(|(_, cell)| *cell == '#')
-            .map(move |(x, _)| Vec2::new(x as i32, y as i32))
+            .map(move |(x, _)| Vec2i::new(x as i32, y as i32))
     }).collect();
 
     let mut max = 0;
-    let mut best_coord = Vec2::new(0,0);
+    let mut best_coord = Vec2i::new(0,0);
     let mut best_map = HashMap::new();
 
     for asteroid in &asteroids {

@@ -1,5 +1,4 @@
 mod intcode;
-mod vec2;
 
 use intcode::{IntCodeRunner, IntCodeMachine, IntCodeIO};
 

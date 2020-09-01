@@ -3,8 +3,7 @@ use std::collections::HashMap;
 mod intcode;
 use intcode::IntCodeRunner;
 
-mod vec2;
-use vec2::Vec2;
+use common::vec2::Vec2i;
 
 fn main() {
     let contents = std::fs::read_to_string("input.txt").expect("Couldn't read file");
@@ -17,12 +16,12 @@ fn main() {
     let mut robot = IntCodeRunner::new(ops);
 
     // Map of each visited node and colour
-    let mut visited = HashMap::<Vec2, i64>::new();
+    let mut visited = HashMap::<Vec2i, i64>::new();
     
-    let directions = vec![Vec2::new(0, 1), Vec2::new(1, 0), Vec2::new(0, -1), Vec2::new(-1, 0)];
+    let directions = vec![Vec2i::new(0, 1), Vec2i::new(1, 0), Vec2i::new(0, -1), Vec2i::new(-1, 0)];
     let mut cur_dir = 0;
 
-    let mut pos = Vec2::new(0, 0);
+    let mut pos = Vec2i::new(0, 0);
 
     // Start panel is white
     visited.insert(pos.clone(), 1);
@@ -57,7 +56,7 @@ fn main() {
 
     for y in (min_y..=max_y).rev() {
         for x in min_x..=max_x {
-            let p = Vec2::new(x, y);
+            let p = Vec2i::new(x, y);
 
             let mut o = ' ';
             if let Some(c) = visited.get(&p) {

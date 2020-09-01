@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 
-use crate::vec2::Vec2;
+use common::vec2::Vec2i;
 
 #[derive(Eq, PartialEq, Clone, Debug)]
 pub struct Direction {
@@ -18,7 +18,7 @@ fn norm(v: i32) -> i32 {
 }
 
 impl Direction {
-    pub fn from(v: Vec2) -> Self {
+    pub fn from(v: Vec2i) -> Self {
         // Quadrant
         let xq = norm(v.x) * -1;
         let yq = norm(v.y) * xq;
@@ -32,8 +32,8 @@ impl Direction {
         }
     }
 
-    pub fn to_vec(&self) -> Vec2 {
-        Vec2::new(self.d, self.n)
+    pub fn to_vec(&self) -> Vec2i {
+        Vec2i::new(self.d, self.n)
     }
 }
 
@@ -63,24 +63,24 @@ mod test {
 
     #[test]
     fn quad() {
-        let v = Direction::from(Vec2::new(1, 1));
+        let v = Direction::from(Vec2i::new(1, 1));
         assert_eq!(v.q, 0);
-        let v = Direction::from(Vec2::new(1, -8));
+        let v = Direction::from(Vec2i::new(1, -8));
         assert_eq!(v.q, 1);
-        let v = Direction::from(Vec2::new(-5, -2));
+        let v = Direction::from(Vec2i::new(-5, -2));
         assert_eq!(v.q, 2);
-        let v = Direction::from(Vec2::new(-1, 1));
+        let v = Direction::from(Vec2i::new(-1, 1));
         assert_eq!(v.q, 3);
     }
 
     #[test]
     fn ordering() {
-        let a = Direction::from(Vec2::new(1, 1));
-        let b = Direction::from(Vec2::new(2, 1));
-        let c = Direction::from(Vec2::new(2, -1));
-        let d = Direction::from(Vec2::new(1, -1));
-        let e = Direction::from(Vec2::new(-2, -5));
-        let f = Direction::from(Vec2::new(-3, 2));
+        let a = Direction::from(Vec2i::new(1, 1));
+        let b = Direction::from(Vec2i::new(2, 1));
+        let c = Direction::from(Vec2i::new(2, -1));
+        let d = Direction::from(Vec2i::new(1, -1));
+        let e = Direction::from(Vec2i::new(-2, -5));
+        let f = Direction::from(Vec2i::new(-3, 2));
 
         assert!(a < b);
         assert!(a < c);
